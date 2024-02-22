@@ -1,4 +1,4 @@
-import { component$, useSignal } from "@builder.io/qwik";
+import { $, component$, useSignal } from "@builder.io/qwik";
 import type { DocumentHead } from "@builder.io/qwik-city";
 
 
@@ -11,7 +11,12 @@ export default component$(() => {
 // useSignal para valores primitivos como booleans, strings, numeros
 const pokemonId = useSignal(1); 
 
+const changePokemonId = $(( value: number ) => {
+  if ( (pokemonId.value + value) <= 0 ) return; 
+  
+  pokemonId.value += value; 
 
+}); 
 
 
   return (
@@ -24,8 +29,8 @@ const pokemonId = useSignal(1);
            style={{ width: '250px'}}>
       </img>
       <div class='mt-2'>
-        <button onClick$={ () => pokemonId.value-- } class='btn btn-primary'>Previous</button>
-        <button onClick$={ () => pokemonId.value++ } class='btn btn-primary'>Next</button>
+        <button onClick$={ () => changePokemonId(-1) } class='btn btn-primary'>Previous</button>
+        <button onClick$={ () => changePokemonId(+1) } class='btn btn-primary'>Next</button>
       </div>
      
     </>
