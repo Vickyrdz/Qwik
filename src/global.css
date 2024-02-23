@@ -65,6 +65,14 @@ body {
   @apply bg-purple-700
 }
 
+.btn-secondary {
+  @apply bg-blue-400 text-white
+}
+
+.btn-secondary:hover {
+  @apply bg-blue-500
+}
+
 button:disabled {
   @apply bg-gray-600 
 }

@@ -28,15 +28,19 @@ const changePokemonId = $(( value: number ) => {
   return (
     <>
       <div>
-        <span class='text-2xl'>Simple search </span>
+        <span class='text-2xl'>Pokemon Number: </span>
         <span class='text-2xl'>{pokemonId}</span>
       </div>
       <PokemonImage id={pokemonId.value} size={250} backImage={showBackImage.value} isVisible={isVisible.value}/>
       <div class='mt-2'>
-        <button onClick$={ () => changePokemonId(-1) } class='btn btn-primary mr-2'>Previous</button>
-        <button onClick$={ () => changePokemonId(+1) } class='btn btn-primary mr-2'>Next</button>
-        <button onClick$={ () => showBackImage.value = !showBackImage.value } class='btn btn-primary mr-2'>Rotate</button>
-        <button onClick$={ () => isVisible.value = !isVisible.value } class='btn btn-primary mr-2'>Show</button>
+        <div class='w-96 flex'>
+          <button onClick$={ () => changePokemonId(-1) } class='btn btn-primary mr-2 w-1/2'>Previous</button>
+          <button onClick$={ () => changePokemonId(+1) } class='btn btn-primary mr-2 w-1/2'>Next</button>
+        </div>
+       <div class='mt-2 w-96 flex'>
+        <button onClick$={ () => showBackImage.value = !showBackImage.value } class='btn btn-secondary  mr-2 w-1/2'>Rotate</button>
+        <button onClick$={ () => isVisible.value = !isVisible.value } class='btn btn-secondary mr-2 w-1/2'>Show</button>
+       </div>
       </div>
      
     </>
