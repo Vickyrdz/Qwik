@@ -1,5 +1,6 @@
 import { $, component$, useSignal } from "@builder.io/qwik";
 import type { DocumentHead } from "@builder.io/qwik-city";
+import { PokemonImage } from "~/components/pokemons/pokemon-image";
 
 
 export default component$(() => {
@@ -10,6 +11,8 @@ export default component$(() => {
 
 // useSignal para valores primitivos como booleans, strings, numeros
 const pokemonId = useSignal(1); 
+const showBackImage = useSignal(false);
+
 
 const changePokemonId = $(( value: number ) => {
   if ( (pokemonId.value + value) <= 0 ) return; 
@@ -19,22 +22,24 @@ const changePokemonId = $(( value: number ) => {
 }); 
 
 
+
+
   return (
     <>
       <div>
         <span class='text-2xl'>Simple search </span>
         <span class='text-2xl'>{pokemonId}</span>
       </div>
-      <img width="96" height="96" src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonId.value}.png`}
-           style={{ width: '250px'}}>
-      </img>
+      <PokemonImage id={pokemonId.value} size={250} backImage={showBackImage.value}/>
       <div class='mt-2'>
-        <button onClick$={ () => changePokemonId(-1) } class='btn btn-primary'>Previous</button>
-        <button onClick$={ () => changePokemonId(+1) } class='btn btn-primary'>Next</button>
+        <button onClick$={ () => changePokemonId(-1) } class='btn btn-primary mr-2'>Previous</button>
+        <button onClick$={ () => changePokemonId(+1) } class='btn btn-primary mr-2'>Next</button>
+        <button onClick$={ () => showBackImage.value = !showBackImage.value } class='btn btn-primary'>Rotate</button>
+
       </div>
      
     </>
-  )
+  ) 
 });
 
 
