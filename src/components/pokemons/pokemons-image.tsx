@@ -1,13 +1,13 @@
 import { component$, useSignal, useTask$ } from "@builder.io/qwik";
 
 interface Props {
-    id: number,
+    id: number | string,
     size?: number,
-    backImage: boolean,
-    isVisible: boolean, 
+    backImage?: boolean,
+    isVisible?: boolean, 
 };
 
-export const PokemonImage = component$(({
+export const PokemonsImage = component$(({
     id,
     size,
     backImage=false,
