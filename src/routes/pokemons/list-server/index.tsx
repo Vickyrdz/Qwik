@@ -1,34 +1,55 @@
-import { component$, sync$ } from '@builder.io/qwik';
-import { DocumentHead, Link, routeLoader$ } from '@builder.io/qwik-city';
-import {BasicPokemonInfo, type PokemonListResponse } from '~/components/interfaces';
+import { component$, useComputed$ } from '@builder.io/qwik';
+import { DocumentHead, Link, routeLoader$, useLocation } from '@builder.io/qwik-city';
+import {SmallPokemon} from '~/components/interfaces';
+import { PokemonImage } from '~/components/pokemon/pokemon-image';
+import { PokemonsImage } from '~/components/pokemons/pokemons-image';
+import { getSmallPokemons } from '~/helpers/getSmallPokemons';
 
 
-export const usePokemonList = routeLoader$<BasicPokemonInfo[]>(async()=> {
-    const resp = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=10&offset=10`);
-    const data = await resp.json() as PokemonListResponse; 
+export const usePokemonList = routeLoader$<SmallPokemon[]>(async({ query, redirect, pathname, })=> {
 
-    return data.results; 
+    const offset = Number(query.get('offset') || '0'); 
+    if (offset < 0 || isNaN(offset)) {
+        throw redirect(301, pathname); 
+    }
+
+   return await getSmallPokemons(offset); 
+  
 })
 
-export default component$(() => {
+export default component$(() => { 
 
     const pokemons = usePokemonList();  
+
+    const location = useLocation(); 
+
+    const currentOffset = useComputed$<number>(()=> {
+        const offsetString = new URLSearchParams(location.url.search); 
+        return Number(offsetString.get('offset') || 0); 
+    })
 
     return (
         <> 
             <div class='flex flex-col'>
                 <span class='text-2xl' >Status</span>
-                <span>Current offset</span> 
-                <span>The page is loading</span>
+                <span>Current offset: {currentOffset}</span> 
+                <span>The page is: {location.isNavigating ? 'loading' : 'loaded'}  </span>
             </div>
             <div class='mt-10'>
-                <Link class='btn btn-primary mr-2'>Previous</Link>
-                <Link class='btn btn-primary mr-2'>Next</Link>
+                <Link 
+                    href={`/pokemons/list-server/?offset=${currentOffset.value - 10}`}
+                    class='btn btn-primary mr-2'>Previous
+                </Link>
+                <Link 
+                    href={`/pokemons/list-server/?offset=${currentOffset.value + 10}`}
+                    class='btn btn-primary mr-2'>Next
+                </Link>
             </div>
             <div class='grid grid-cols-5 mt-5'>
                 {
                     pokemons.value.map( pokemon => 
                     <div key={pokemon.name} class='m-5 flex flex-col justify-center items-center'>
+                        <PokemonsImage id={pokemon.id}/>
                         <span class='capitalize'>{pokemon.name}</span>
                     </div>)
                 }
