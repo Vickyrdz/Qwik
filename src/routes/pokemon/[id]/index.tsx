@@ -9,10 +9,7 @@ import { PokemonImage } from '~/components/pokemon/pokemon-image';
 export const usePokemonIdVerified = routeLoader$<number>(({ params, redirect })=>{
 
   const id = Number(params.id);
-  // if( isNaN(id) || id <= 0 || id > 1000 ) redirect(301, '/'); 
-  if( isNaN(id) ) redirect(301, '/'); 
-  if( id <= 0 ) redirect(301, '/');
-  if( id > 1000 ) redirect(301, '/'); 
+  if( isNaN(id) || id <= 0 || id > 1000 ) throw redirect(301, '/'); 
  
   return id;
 }); 
