@@ -1,11 +1,7 @@
 import { component$, Slot, useContextProvider, useStore, useStyles$ } from "@builder.io/qwik";
-import type { RequestHandler } from "@builder.io/qwik-city";
-
 import Navbar from "../components/shared/navbar/navbar";
-// import Footer from "../components/shared/footer/footer";
-
 import styles from "./styles.css?inline";
-import { PokemonGameContext, PokemonGameState } from "~/context/context";
+import { PokemonGameContext, PokemonGameState, PokemonListContext, PokemonListState } from "~/context/context";
 
  
 export default component$(() => {
@@ -17,8 +13,20 @@ export default component$(() => {
      isVisible: false
   }); 
 
-  //elegimos eso como estado inicial como segunda variable
-  useContextProvider( PokemonGameContext, pokemonGame); 
+  //elegimos eso como estado inicial como segundo valor
+  useContextProvider( PokemonGameContext, pokemonGame);  
+
+
+  const pokemonList = useStore<PokemonListState>({
+    currentPage: 1,
+    isLoading: false,
+    pokemons: []
+  });
+
+  useContextProvider( PokemonListContext, pokemonList);  
+
+
+
  
   return (
     <>

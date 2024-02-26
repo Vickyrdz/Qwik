@@ -1,23 +1,13 @@
-import { component$, useStylesScoped$, useStore, useVisibleTask$, useOnDocument, $, useTask$ } from '@builder.io/qwik';
-import type { DocumentHead } from '@builder.io/qwik-city';
-import { SmallPokemon } from '~/components/interfaces';
+import { component$, useOnDocument, $, useTask$, useContext } from '@builder.io/qwik';
+import { type DocumentHead } from '@builder.io/qwik-city';
 import { PokemonsImage } from '~/components/pokemons/pokemons-image';
+import { PokemonListContext } from '~/context/context';
 import { getSmallPokemons } from '~/helpers/getSmallPokemons';
 
 
-interface PokemonPageState {
-  currentPage: number,
-  isLoading: boolean, 
-  pokemons: SmallPokemon[]
-}
-
 export default component$(() => {
 
-  const pokemonState = useStore<PokemonPageState>({
-    currentPage: 0, 
-    isLoading: false,  //lo ponemos en false porque estamos usando useTask y ya tengo la data inicial, no necesita carga
-    pokemons: []
-  });
+  const pokemonState = useContext(PokemonListContext); 
 
   //-------------------useVisibleTask y UseTask-------------------------(desplegar para leer más)
   //funciona cuando se monta el componente. Para eso usa task para decirle cuando quiero que vuelva a ejecutar
