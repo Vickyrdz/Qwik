@@ -2,6 +2,7 @@ import { component$, useContext} from '@builder.io/qwik';
 import { routeLoader$ } from '@builder.io/qwik-city';
 import { PokemonImage } from '~/components/pokemon/pokemon-image';
 import { PokemonGameContext } from '~/context/context';
+import { usePokeGame } from '~/hooks/usePokeGame';
 
 //nos permite cargar algun tipo de mecanismo ANTES de que se renderice el componente
 //en este caso tenemos que verificar que el paramertro de la url sea un numero positivo y entre 1-800
@@ -18,24 +19,31 @@ export const usePokemonIdVerified = routeLoader$<number>(({ params, redirect })=
 
 export default component$(() => {
 
-  // const location = useLocation();
-  // let imageLoaded = useSignal(true);
-  // if (location.params.id) imageLoaded.value = true; 
 
   const pokemonId = usePokemonIdVerified(); 
-  const pokemonGame = useContext(PokemonGameContext); 
+
+  const {
+    isVisible,
+    showBackImage,
+    toggleFromBack,
+    toggleVisible
+  } = usePokeGame();
 
 
   return(
     <>
-        <span>
+        <span> 
             Pokemon: {pokemonId}
         </span>
         <PokemonImage
           id={pokemonId.value}
-          isVisible={pokemonGame.isVisible}
-          backImage={pokemonGame.showBackImage}
+          isVisible={isVisible.value}
+          backImage={showBackImage.value}
         />
+        <div class='mt-2'>
+          <button onClick$={toggleFromBack} class='btn btn-primary mr-2'>Rotate</button>
+          <button onClick$={toggleVisible} class='btn btn secondary'>Show</button>
+        </div>
     </>
   ) 
 });
